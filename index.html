@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modelový test 3</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap">
+<style>
+  :root{
+    --cream:#f5f0e8;
+    --card:#ffffff;
+    --dark:#2d1f24;
+    --pink:#e8457a;
+    --pink-soft:#fdf0f4;
+    --muted:#888880;
+    --success:#2d8a60;
+    --success-soft:#e7f5ee;
+    --error:#c8465c;
+    --error-soft:#fbe9ec;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--cream);
+    color:var(--dark);
+    font-family:'Poppins',system-ui,-apple-system,sans-serif;
+    -webkit-user-select:none;
+    user-select:none;
+  }
+  .page{
+    max-width:760px;
+    margin:0 auto;
+    padding-inline:16px;
+    padding-block:28px 60px;
+  }
+  .hero{
+    background:var(--dark);
+    color:#fff;
+    border-radius:20px;
+    padding:26px 22px;
+    text-align:center;
+    margin-bottom:22px;
+  }
+  .hero .eyebrow{
+    display:inline-block;
+    background:var(--pink);
+    color:#fff;
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    padding:5px 14px;
+    border-radius:999px;
+    margin-bottom:14px;
+  }
+  .hero h1{
+    font-size:clamp(24px,6vw,32px);
+    font-weight:800;
+    margin:0 0 8px;
+  }
+  .hero p{
+    font-size:14px;
+    color:#e9dfe2;
+    margin:0;
+    line-height:1.5;
+  }
+  .section-divider{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin:34px 0 16px;
+  }
+  .section-divider:first-of-type{margin-top:8px;}
+  .section-divider .line{flex:1;height:1px;background:#e3d6db;}
+  .section-divider .label{
+    display:flex;align-items:center;gap:8px;
+    background:var(--pink);
+    color:#fff;
+    font-weight:800;
+    font-size:14px;
+    letter-spacing:.04em;
+    padding:9px 20px;
+    border-radius:999px;
+    white-space:nowrap;
+  }
+  .task{
+    background:var(--card);
+    border-radius:20px;
+    padding:22px 18px 26px;
+    margin-bottom:22px;
+    box-shadow:0 2px 14px rgba(45,31,36,0.06);
+    border:1px solid #eee3e7;
+  }
+  .task-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    background:var(--dark);
+    color:#fff;
+    font-weight:700;
+    font-size:13px;
+    letter-spacing:.03em;
+    padding:8px 16px;
+    border-radius:999px;
+    margin-bottom:16px;
+  }
+  .task-badge .pink-star{color:var(--pink);}
+  .instruction{
+    background:var(--pink-soft);
+    border-left:4px solid var(--pink);
+    border-radius:10px;
+    padding:12px 14px;
+    font-size:14px;
+    line-height:1.55;
+    margin-bottom:18px;
+  }
+  .reading{
+    background:var(--cream);
+    border-radius:14px;
+    padding:16px 16px;
+    font-size:14.5px;
+    line-height:1.7;
+    margin-bottom:18px;
+  }
+  .reading h3{margin:0 0 10px;font-size:16px;font-weight:700;}
+  .reading p{margin:0 0 10px;}
+  .reading p:last-child{margin-bottom:0;}
+  .offers{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+    margin-bottom:18px;
+  }
+  @media (max-width:520px){ .offers{grid-template-columns:1fr;} }
+  .offer{
+    background:var(--cream);
+    border-radius:14px;
+    padding:14px;
+    font-size:13.5px;
+    line-height:1.55;
+  }
+  .offer strong{display:block;font-size:13.5px;margin-bottom:6px;color:var(--dark);}
+  .offer .letter{
+    display:inline-flex;
+    align-items:center;justify-content:center;
+    width:22px;height:22px;
+    background:var(--pink);
+    color:#fff;
+    font-weight:700;
+    font-size:12px;
+    border-radius:50%;
+    margin-right:7px;
+  }
+  .email-box{
+    background:#fff;
+    border:1px solid #e5dde0;
+    border-radius:14px;
+    overflow:hidden;
+    margin-bottom:18px;
+  }
+  .email-topbar{
+    background:#efe9ea;
+    padding:8px 14px;
+    font-size:12px;
+    color:var(--muted);
+  }
+  .email-meta{
+    padding:10px 16px;
+    font-size:13px;
+    color:var(--muted);
+    border-bottom:1px solid #f0eaec;
+  }
+  .email-meta b{color:var(--dark);}
+  .email-body{
+    padding:14px 16px 16px;
+    font-size:14px;
+    line-height:1.65;
+  }
+  .email-body p{margin:0 0 10px;}
+  .email-body p:last-child{margin-bottom:0;}
+  .msg-label{
+    font-size:12px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    color:var(--pink);
+    margin-bottom:6px;
+  }
+  .two-col{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+    margin-bottom:18px;
+  }
+  @media (max-width:560px){ .two-col{grid-template-columns:1fr;} }
+  .q{
+    margin-bottom:16px;
+    padding-bottom:16px;
+    border-bottom:1px solid #f1ebed;
+  }
+  .q:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+  .q-text{
+    font-size:14.5px;
+    font-weight:600;
+    margin-bottom:10px;
+    line-height:1.45;
+  }
+  .q-num{color:var(--pink);margin-right:5px;}
+  .answers{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+  .ans-btn{
+    font-family:inherit;
+    border:2px solid #e5dde0;
+    background:#fff;
+    color:var(--dark);
+    font-size:13.5px;
+    font-weight:600;
+    padding:8px 16px;
+    border-radius:10px;
+    cursor:pointer;
+    transition:all .15s ease;
+  }
+  .ans-btn:hover{border-color:var(--pink);}
+  .ans-btn:focus-visible{outline:2px solid var(--pink);outline-offset:2px;}
+  .ans-btn.selected{background:var(--pink);border-color:var(--pink);color:#fff;}
+  .ans-btn.correct{background:var(--success);border-color:var(--success);color:#fff;}
+  .ans-btn.incorrect{background:var(--error);border-color:var(--error);color:#fff;}
+  .ans-btn.reveal{border-color:var(--success);color:var(--success);background:#fff;}
+  .ans-btn[disabled]{cursor:default;}
+  .text-ans{
+    font-family:inherit;
+    border:2px solid #e5dde0;
+    background:#fff;
+    color:var(--dark);
+    font-size:14px;
+    font-weight:500;
+    padding:9px 12px;
+    border-radius:10px;
+    width:100%;
+    max-width:260px;
+  }
+  .text-ans:focus{outline:2px solid var(--pink);border-color:var(--pink);}
+  .text-ans.correct{border-color:var(--success);background:var(--success-soft);}
+  .text-ans.incorrect{border-color:var(--error);background:var(--error-soft);}
+  .text-ans[disabled]{cursor:default;}
+  .explain{
+    display:none;
+    margin-top:10px;
+    background:var(--error-soft);
+    border-left:4px solid var(--error);
+    border-radius:8px;
+    padding:10px 12px;
+    font-size:13px;
+    line-height:1.5;
+    color:#5a2430;
+  }
+  .explain.show{display:block;}
+  .explain b{color:var(--error);}
+  .check-row{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    flex-wrap:wrap;
+    margin-top:6px;
+  }
+  .check-btn{
+    font-family:inherit;
+    background:var(--pink);
+    color:#fff;
+    border:none;
+    font-size:14px;
+    font-weight:700;
+    padding:11px 22px;
+    border-radius:999px;
+    cursor:pointer;
+  }
+  .check-btn:hover{background:#d63868;}
+  .check-btn[disabled]{background:#e3b8c6;cursor:default;}
+  .hint-msg{font-size:13px;color:var(--muted);}
+  .score{
+    display:none;
+    font-weight:700;
+    font-size:14px;
+    padding:8px 16px;
+    border-radius:999px;
+  }
+  .score.show{display:inline-block;}
+  .score.good{background:var(--success-soft);color:var(--success);}
+  .score.bad{background:var(--error-soft);color:var(--error);}
+  .credit{text-align:center;font-size:12.5px;color:var(--muted);margin-top:4px;}
+  .footer-note{
+    text-align:center;
+    font-size:12.5px;
+    color:var(--muted);
+    line-height:1.6;
+    margin-top:8px;
+    padding:0 10px;
+  }
+  .watermark{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.05;overflow:hidden;}
+  .watermark span{position:absolute;white-space:nowrap;font-size:13px;font-weight:700;color:var(--dark);transform:rotate(-28deg);}
+  .content{position:relative;z-index:1;}
+
+  .audio-wrap{
+    background:var(--cream);
+    border-radius:12px;
+    padding:12px 14px;
+    margin-bottom:16px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    flex-wrap:wrap;
+  }
+  .audio-wrap .audio-label{
+    font-size:13px;
+    font-weight:700;
+    color:var(--dark);
+    display:flex;
+    align-items:center;
+    gap:6px;
+    white-space:nowrap;
+  }
+  .audio-wrap audio{
+    flex:1;
+    min-width:200px;
+    height:36px;
+  }
+  .topics-legend{
+    display:flex;flex-wrap:wrap;gap:8px;
+    font-size:12.5px;
+    background:var(--pink-soft);
+    border-radius:10px;
+    padding:10px 12px;
+    margin-bottom:16px;
+  }
+  .topics-legend b{color:var(--pink);}
+
+  .display-card{
+    background:var(--cream);
+    border-radius:14px;
+    padding:16px;
+    margin-bottom:14px;
+  }
+  .display-card:last-child{margin-bottom:0;}
+  .display-card h4{margin:0 0 8px;font-size:14.5px;font-weight:700;}
+  .display-card ul{margin:8px 0 0;padding-left:20px;font-size:13.5px;line-height:1.6;}
+  .display-card .min-words{
+    display:inline-block;
+    margin-top:10px;
+    font-size:12px;
+    font-weight:700;
+    color:var(--pink);
+    background:var(--pink-soft);
+    padding:4px 10px;
+    border-radius:999px;
+  }
+  .two-display{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  @media (max-width:560px){ .two-display{grid-template-columns:1fr;} }
+  .note-inline{
+    font-size:12.5px;
+    color:var(--muted);
+    font-style:italic;
+    margin-top:6px;
+  }
+
+  .gate-overlay{
+    position:fixed;
+    inset:0;
+    z-index:100;
+    background:var(--dark);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+  }
+  .gate-card{
+    background:var(--card);
+    border-radius:20px;
+    padding:32px 26px;
+    max-width:320px;
+    width:100%;
+    text-align:center;
+    box-shadow:0 10px 40px rgba(0,0,0,0.3);
+  }
+  .gate-card .eyebrow{
+    display:inline-block;
+    background:var(--pink);
+    color:#fff;
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    padding:5px 14px;
+    border-radius:999px;
+    margin-bottom:14px;
+  }
+  .gate-card h2{margin:0 0 8px;font-size:19px;font-weight:800;color:var(--dark);}
+  .gate-card p{margin:0 0 18px;font-size:13.5px;color:var(--muted);line-height:1.5;}
+  .gate-input{
+    font-family:inherit;
+    width:100%;
+    border:2px solid #e5dde0;
+    border-radius:10px;
+    padding:11px 14px;
+    font-size:15px;
+    text-align:center;
+    margin-bottom:12px;
+  }
+  .gate-input:focus{outline:none;border-color:var(--pink);}
+  .gate-btn{
+    font-family:inherit;
+    background:var(--pink);
+    color:#fff;
+    border:none;
+    font-size:14px;
+    font-weight:700;
+    padding:11px 22px;
+    border-radius:999px;
+    cursor:pointer;
+    width:100%;
+  }
+  .gate-btn:hover{background:#d63868;}
+  .gate-error{
+    display:none;
+    color:var(--error);
+    font-size:13px;
+    font-weight:600;
+    margin-top:10px;
+  }
+  .gate-error.show{display:block;}
+  #page-content{display:none;}
+</style>
+</head>
+<body>
+
+
+<div class="gate-overlay" id="gateOverlay">
+  <div class="gate-card">
+    <span class="eyebrow">🔒 Chráněný materiál</span>
+    <h2>Modelový test 3</h2>
+    <p>Tento materiál je jen pro naši skupinu. Zadejte prosím heslo, které jste dostali na Telegramu.</p>
+    <input type="password" class="gate-input" id="gateInput" placeholder="heslo" autocomplete="off">
+    <button class="gate-btn" id="gateBtn">Vstoupit</button>
+    <div class="gate-error" id="gateError">Nesprávné heslo, zkuste to znovu.</div>
+  </div>
+</div>
+
+<div class="watermark" id="watermark"></div>
+
+<div class="page content" id="page-content">
+
+  <div class="hero">
+    <span class="eyebrow">✦ Modelový test 3</span>
+    <h1>CCE A2 — zkouška nanečisto</h1>
+    <p>Čtení a Poslech si hned zkontrolujete tady — stačí vybrat odpověď a kliknout na „Zkontrolovat". Psaní a Mluvení jsou zadání ke zpracování, ta si spolu projdeme na lekci.</p>
+  </div>
+
+  <!-- ============ ČTENÍ ============ -->
+  <div class="section-divider"><div class="line"></div><div class="label">📖 Čtení</div><div class="line"></div></div>
+
+  <!-- ČTENÍ 1 -->
+  <div class="task" id="ct1">
+    <div class="task-badge"><span class="pink-star">✦</span> ČTENÍ, ÚLOHA Č. 1 — ZMĚNA TRAMVAJOVÉ DOPRAVY</div>
+    <div class="instruction">Přečtěte si text a rozhodněte, jestli tvrzení 1–6 jsou pravda (ANO), nebo nepravda (NE).</div>
+    <div class="reading">
+      <h3>🚊 Oprava tramvajové tratě</h3>
+      <p>Od 12. do 18. srpna bude probíhat oprava tramvajové tratě mezi zastávkami Karlovo náměstí a I. P. Pavlova.</p>
+      <p>Tramvaje číslo 10 a 16 budou v této době jezdit po jiné trase. Mezi Karlovým náměstím a I. P. Pavlova bude místo nich jezdit náhradní autobus X10.</p>
+      <p>Autobus X10 bude jezdit každý den od 5:00 do 23:30. Přes den pojede každých 8 minut, po 21. hodině každých 15 minut.</p>
+      <p>Cestující nepotřebují žádnou speciální jízdenku. V autobusu X10 platí stejné jízdenky jako v tramvajích.</p>
+      <p>Oprava měla původně skončit 16. srpna, ale práce budou trvat o dva dny déle. Aktuální informace najdete na webu dopravního podniku a v aplikaci PID Lítačka.</p>
+    </div>
+    <div id="ct1-q">
+      <div class="q" data-correct="ANO">
+        <div class="q-text"><span class="q-num">1.</span>Oprava skončí později, než bylo původně plánováno.</div>
+        <div class="answers"><button class="ans-btn" data-val="ANO">ANO</button><button class="ans-btn" data-val="NE">NE</button></div>
+        <div class="explain">✗ Správně: <b>ANO</b> — měla skončit 16. srpna, ale potrvá o dva dny déle.</div>
+      </div>
+      <div class="q" data-correct="NE">
+        <div class="q-text"><span class="q-num">2.</span>Tramvaj číslo 16 nebude během opravy jezdit vůbec.</div>
+        <div class="answers"><button class="ans-btn" data-val="ANO">ANO</button><button class="ans-btn" data-val="NE">NE</button></div>
+        <div class="explain">✗ Správně: <b>NE</b> — tramvaj č. 16 jezdí dál, jen po jiné trase.</div>
+      </div>
+      <div class="q" data-correct="ANO">
+        <div class="q-text"><span class="q-num">3.</span>Náhradní autobus pojede večer méně často než přes den.</div>
+        <div class="answers"><button class="ans-btn" data-val="ANO">ANO</button><button class="ans-btn" data-val="NE">NE</button></div>
+        <div class="explain">✗ Správně: <b>ANO</b> — přes den jezdí každých 8 minut, po 21. hodině jen každých 15 minut.</div>
+      </div>
+      <div class="q" data-correct="NE">
+        <div class="q-text"><span class="q-num">4.</span>Autobus X10 mohou cestující použít pouze s novou jízdenkou.</div>
+        <div class="answers"><button class="ans-btn" data-val="ANO">ANO</button><button class="ans-btn" data-val="NE">NE</button></div>
+        <div class="explain">✗ Správně: <b>NE</b> — platí stejné jízdenky jako v tramvajích, žádná speciální jízdenka není potřeba.</div>
+      </div>
+      <div class="q" data-correct="ANO">
+        <div class="q-text"><span class="q-num">5.</span>Náhradní autobus bude jezdit také po 23. hodině.</div>
+        <div class="answers"><button class="ans-btn" data-val="ANO">ANO</button><button class="ans-btn" data-val="NE">NE</button></div>
+        <div class="explain">✗ Správně: <b>ANO</b> — autobus jezdí až do 23:30, tedy i po 23. hodině.</div>
+      </div>
+      <div class="q" data-correct="ANO">
+        <div class="q-text"><span class="q-num">6.</span>Informace o dopravě jsou dostupné také v telefonu.</div>
+        <div class="answers"><button class="ans-btn" data-val="ANO">ANO</button><button class="ans-btn" data-val="NE">NE</button></div>
+        <div class="explain">✗ Správně: <b>ANO</b> — aktuální informace jsou i v aplikaci PID Lítačka, kterou lze mít v telefonu.</div>
+      </div>
+    </div>
+    <div class="check-row">
+      <button class="check-btn" data-task="ct1-q">Zkontrolovat odpovědi</button>
+      <span class="hint-msg" data-hint="ct1-q"></span>
+      <span class="score" data-score="ct1-q"></span>
+    </div>
+  </div>
+
+  <!-- ČTENÍ 2 -->
+  <div class="task" id="ct2">
+    <div class="task-badge"><span class="pink-star">✦</span> ČTENÍ, ÚLOHA Č. 2 — NABÍDKY</div>
+    <div class="instruction">Přečtěte si nabídky A–D a úkoly 7–12. Vyberte jednu správnou odpověď.</div>
+    <div class="offers">
+      <div class="offer"><strong><span class="letter">A</span>Cykloservis SpeedBike</strong>Opravujeme jízdní kola všech značek. Otevřeno pondělí–pátek 8:00–18:00, v sobotu pouze dopoledne. Při první návštěvě Vám kolo zdarma zkontrolujeme. Za případnou opravu už ale platíte. Pokud oprava trvá déle než dva dny, můžete si u nás půjčit náhradní kolo.</div>
+      <div class="offer"><strong><span class="letter">B</span>TravelBus</strong>Každý víkend pořádáme jednodenní výlety do Rakouska. Odjezd je v sobotu v 6:30 a návrat kolem 22:00. V ceně je doprava a služby průvodce. Oběd si cestující platí sami. Děti do 12 let mají dopravu o 20 % levnější.</div>
+      <div class="offer"><strong><span class="letter">C</span>Kurýrní služba Expres</strong>Hledáme řidiče dodávky. Pracuje se od pondělí do pátku, většinou od 7:00 do 15:30. Řidičský průkaz skupiny B je nutný. Vlastní auto nepotřebujete – během práce používáte služební dodávku.</div>
+      <div class="offer"><strong><span class="letter">D</span>LiftGo</strong>Objednejte si jízdu jednoduše přes mobilní aplikaci. Jezdíme ve většině velkých měst v České republice. Noví zákazníci dostanou na první cestu slevu 50 %. Pokud cestu zrušíte nejpozději deset minut před příjezdem auta, nic neplatíte.</div>
+    </div>
+    <div id="ct2-q">
+      <div class="q" data-correct="C">
+        <div class="q-text"><span class="q-num">7.</span>Kde nemusíte mít vlastní dopravní prostředek, ale musíte umět řídit?</div>
+        <div class="answers"><button class="ans-btn" data-val="A">A</button><button class="ans-btn" data-val="B">B</button><button class="ans-btn" data-val="C">C</button><button class="ans-btn" data-val="D">D</button></div>
+        <div class="explain">✗ Správně: <b>C</b> — u kurýrní služby používáte služební dodávku, ale potřebujete řidičský průkaz skupiny B.</div>
+      </div>
+      <div class="q" data-correct="A">
+        <div class="q-text"><span class="q-num">8.</span>Kde dostanete jednu službu zdarma, ale za další už můžete platit?</div>
+        <div class="answers"><button class="ans-btn" data-val="A">A</button><button class="ans-btn" data-val="B">B</button><button class="ans-btn" data-val="C">C</button><button class="ans-btn" data-val="D">D</button></div>
+        <div class="explain">✗ Správně: <b>A</b> — kontrola kola je zdarma, ale samotná oprava se už platí.</div>
+      </div>
+      <div class="q" data-correct="B">
+        <div class="q-text"><span class="q-num">9.</span>Kde můžete cestovat levněji pouze za určité podmínky?</div>
+        <div class="answers"><button class="ans-btn" data-val="A">A</button><button class="ans-btn" data-val="B">B</button><button class="ans-btn" data-val="C">C</button><button class="ans-btn" data-val="D">D</button></div>
+        <div class="explain">✗ Správně: <b>B</b> — sleva 20 % na dopravu platí jen pro děti do 12 let.</div>
+      </div>
+      <div class="q" data-correct="B">
+        <div class="q-text"><span class="q-num">10.</span>Kde se během jednoho dne dostanete do jiné země a zpět?</div>
+        <div class="answers"><button class="ans-btn" data-val="A">A</button><button class="ans-btn" data-val="B">B</button><button class="ans-btn" data-val="C">C</button><button class="ans-btn" data-val="D">D</button></div>
+        <div class="explain">✗ Správně: <b>B</b> — TravelBus nabízí jednodenní výlety do Rakouska, odjezd ráno a návrat večer.</div>
+      </div>
+      <div class="q" data-correct="D">
+        <div class="q-text"><span class="q-num">11.</span>Kde můžete někdy získat službu zdarma, když změníte svůj plán včas?</div>
+        <div class="answers"><button class="ans-btn" data-val="A">A</button><button class="ans-btn" data-val="B">B</button><button class="ans-btn" data-val="C">C</button><button class="ans-btn" data-val="D">D</button></div>
+        <div class="explain">✗ Správně: <b>D</b> — pokud u LiftGo zrušíte cestu alespoň 10 minut předem, nic neplatíte.</div>
+      </div>
+      <div class="q" data-correct="A">
+        <div class="q-text"><span class="q-num">12.</span>Kde můžete dočasně dostat jiný dopravní prostředek, když svůj nemůžete používat?</div>
+        <div class="answers"><button class="ans-btn" data-val="A">A</button><button class="ans-btn" data-val="B">B</button><button class="ans-btn" data-val="C">C</button><button class="ans-btn" data-val="D">D</button></div>
+        <div class="explain">✗ Správně: <b>A</b> — pokud oprava kola trvá déle než dva dny, cykloservis půjčí náhradní kolo.</div>
+      </div>
+    </div>
+    <div class="check-row">
+      <button class="check-btn" data-task="ct2-q">Zkontrolovat odpovědi</button>
+      <span class="hint-msg" data-hint="ct2-q"></span>
+      <span class="score" data-score="ct2-q"></span>
+    </div>
+  </div>
+
+  <!-- ČTENÍ 3 -->
+  <div class="task" id="ct3">
+    <div class="task-badge"><span class="pink-star">✦</span> ČTENÍ, ÚLOHA Č. 3 — PETR DOJÍŽDÍ DO PRÁCE</div>
+    <div class="instruction">Přečtěte si e-mail a úkoly 13–17. U každého úkolu vyberte jednu správnou odpověď A–C.</div>
+    <div class="email-box">
+      <div class="email-topbar">✉️ Nová zpráva</div>
+      <div class="email-meta"><b>Komu:</b> Tomáš &nbsp;·&nbsp; <b>Předmět:</b> Práce v Brně</div>
+      <div class="email-body">
+        <p>Ahoj Tomáši,<br>už skoro dva měsíce pracuju v Brně. Původně jsem chtěl jezdit do práce autem, protože jsem si myslel, že to bude rychlejší. Nakonec ale každý pracovní den jezdím vlakem. Autem bych musel ráno dlouho stát v koloně a navíc je parkování u firmy drahé.</p>
+        <p>Cesta vlakem trvá asi čtyřicet minut. Ráno většinou poslouchám hudbu, ale cestou domů často pracuju na počítači.</p>
+        <p>Minulý týden měl můj vlak dvakrát zpoždění kvůli opravě tratě. V úterý jsem proto přišel do práce skoro o půl hodiny později. Ve čtvrtek měl vlak také zpoždění, ale vyjel jsem z domu dřív, takže jsem do práce dorazil včas.</p>
+        <p>Teď si kupuju jednotlivé jízdenky. Od příštího měsíce ale budu jezdit ještě častěji, protože budu dvakrát týdně navštěvovat večerní kurz v Brně. Proto jsem si spočítal, že roční jízdenka pro mě bude levnější.</p>
+        <p>Měj se,<br>Petr</p>
+      </div>
+    </div>
+    <div id="ct3-q">
+      <div class="q" data-correct="B">
+        <div class="q-text"><span class="q-num">13.</span>Proč Petr nakonec nejezdí do práce autem?</div>
+        <div class="answers"><button class="ans-btn" data-val="A">A) Nemá řidičský průkaz.</button><button class="ans-btn" data-val="B">B) Cesta autem pro něj nemá výhody, které očekával.</button><button class="ans-btn" data-val="C">C) Jeho firma zakázala zaměstnancům parkovat.</button></div>
+        <div class="explain">✗ Správně: <b>B</b> — myslel si, že auto bude rychlejší, ale musel by stát v koloně a parkování je drahé.</div>
+      </div>
+      <div class="q" data-correct="C">
+        <div class="q-text"><span class="q-num">14.</span>Co Petr obvykle dělá při cestě z práce?</div>
+        <div class="answers"><button class="ans-btn" data-val="A">A) Poslouchá hudbu.</button><button class="ans-btn" data-val="B">B) Spí.</button><button class="ans-btn" data-val="C">C) Pracuje na počítači.</button></div>
+        <div class="explain">✗ Správně: <b>C</b> — hudbu poslouchá ráno, cestou domů pracuje na počítači.</div>
+      </div>
+      <div class="q" data-correct="B">
+        <div class="q-text"><span class="q-num">15.</span>Co se stalo ve čtvrtek?</div>
+        <div class="answers"><button class="ans-btn" data-val="A">A) Petr přijel pozdě kvůli zpoždění vlaku.</button><button class="ans-btn" data-val="B">B) Vlak měl zpoždění, ale Petr přijel včas.</button><button class="ans-btn" data-val="C">C) Petr jel do práce autem.</button></div>
+        <div class="explain">✗ Správně: <b>B</b> — vlak měl zpoždění, ale protože Petr vyjel dřív, dorazil do práce včas.</div>
+      </div>
+      <div class="q" data-correct="B">
+        <div class="q-text"><span class="q-num">16.</span>Proč bude Petr od příštího měsíce cestovat častěji?</div>
+        <div class="answers"><button class="ans-btn" data-val="A">A) Změní zaměstnání.</button><button class="ans-btn" data-val="B">B) Bude mít další pravidelnou aktivitu v Brně.</button><button class="ans-btn" data-val="C">C) Vlaky budou jezdit častěji.</button></div>
+        <div class="explain">✗ Správně: <b>B</b> — bude dvakrát týdně navštěvovat večerní kurz v Brně.</div>
+      </div>
+      <div class="q" data-correct="A">
+        <div class="q-text"><span class="q-num">17.</span>Proč si Petr chce koupit roční jízdenku?</div>
+        <div class="answers"><button class="ans-btn" data-val="A">A) Při jeho způsobu cestování se mu finančně vyplatí.</button><button class="ans-btn" data-val="B">B) Jednotlivé jízdenky už nebude možné koupit.</button><button class="ans-btn" data-val="C">C) Potřebuje ji na večerní kurz.</button></div>
+        <div class="explain">✗ Správně: <b>A</b> — protože bude jezdit častěji, vyjde mu roční jízdenka levněji.</div>
+      </div>
+    </div>
+    <div class="check-row">
+      <button class="check-btn" data-task="ct3-q">Zkontrolovat odpovědi</button>
+      <span class="hint-msg" data-hint="ct3-q"></span>
+      <span class="score" data-score="ct3-q"></span>
+    </div>
+  </div>
+
+  <!-- ČTENÍ 4 -->
+  <div class="task" id="ct4">
+    <div class="task-badge"><span class="pink-star">✦</span> ČTENÍ, ÚLOHA Č. 4 — KRÁTKÉ ZPRÁVY</div>
+    <div class="instruction">Přečtěte si dva texty a úkoly 18–20. U každého úkolu vyberte jednu správnou odpověď A–C.</div>
+    <div class="two-col">
+      <div class="reading" style="margin-bottom:0;">
+        <div class="msg-label">✈️ Informace na letišti</div>
+        <p>Kvůli silnému větru jsou dnes dopoledne všechny lety do Amsterdamu zrušeny.</p>
+        <p>Odpolední let v 17:40 zatím zrušený není, ale může mít zpoždění. Cestující mají před cestou na letiště zkontrolovat aktuální informace.</p>
+        <p>Cestující ze zrušených letů se mohou obrátit na informační přepážku nebo přímo na svou leteckou společnost.</p>
+      </div>
+      <div class="reading" style="margin-bottom:0;">
+        <div class="msg-label">🚌 SMS</div>
+        <p>Ahoj,<br>náš autobus do Českých Budějovic měl původně odjíždět v 7:45, ale dopravce změnil čas na 7:15.</p>
+        <p>Já budu na nádraží už v 6:50, protože si ještě potřebuju koupit něco k jídlu. Tobě stačí přijít nejpozději v 7:00.<br>Martin</p>
+      </div>
+    </div>
+    <div id="ct4-q">
+      <div class="q" data-correct="B">
+        <div class="q-text"><span class="q-num">18.</span>Které tvrzení o letech do Amsterdamu je správné?</div>
+        <div class="answers"><button class="ans-btn" data-val="A">A) Dnes nepoletí žádné letadlo do Amsterdamu.</button><button class="ans-btn" data-val="B">B) Dopolední lety byly zrušeny, ale jeden pozdější zatím může letět.</button><button class="ans-btn" data-val="C">C) Všechny lety budou mít pouze zpoždění.</button></div>
+        <div class="explain">✗ Správně: <b>B</b> — zrušeny jsou jen dopolední lety, odpolední let v 17:40 zatím zrušený není.</div>
+      </div>
+      <div class="q" data-correct="C">
+        <div class="q-text"><span class="q-num">19.</span>Co mají cestující udělat ještě před cestou na letiště?</div>
+        <div class="answers"><button class="ans-btn" data-val="A">A) Koupit si novou letenku.</button><button class="ans-btn" data-val="B">B) Zavolat na policii.</button><button class="ans-btn" data-val="C">C) Ověřit si aktuální situaci.</button></div>
+        <div class="explain">✗ Správně: <b>C</b> — cestující mají před cestou zkontrolovat aktuální informace.</div>
+      </div>
+      <div class="q" data-correct="A">
+        <div class="q-text"><span class="q-num">20.</span>Proč chce Martin přijít na nádraží dříve než příjemce zprávy?</div>
+        <div class="answers"><button class="ans-btn" data-val="A">A) Potřebuje si ještě něco zařídit.</button><button class="ans-btn" data-val="B">B) Jeho autobus odjíždí dříve.</button><button class="ans-btn" data-val="C">C) Musí si koupit jízdenku.</button></div>
+        <div class="explain">✗ Správně: <b>A</b> — chce si ještě koupit něco k jídlu, proto přijde dřív.</div>
+      </div>
+    </div>
+    <div class="check-row">
+      <button class="check-btn" data-task="ct4-q">Zkontrolovat odpovědi</button>
+      <span class="hint-msg" data-hint="ct4-q"></span>
+      <span class="score" data-score="ct4-q"></span>
+    </div>
+  </div>
+
+  <!-- ============ POSLECH ============ -->
+  <div class="section-divider"><div class="line"></div><div class="label">🎧 Poslech</div><div class="line"></div></div>
+
+  <!-- POSLECH 1 -->
+  <div class="task" id="ps1">
+    <div class="task-badge"><span class="pink-star">✦</span> POSLECH, ÚLOHA Č. 1</div>
+    <div class="instruction">Přečtěte si úkoly 1–7. Potom uslyšíte rozhovor. Rozhodněte, jestli jsou tvrzení ANO, nebo NE. Nahrávku uslyšíte 2×.</div>
+    <div class="audio-wrap"><span class="audio-label">🔊 Nahrávka 1</span><audio controls src="audio/poslech1.mp3"></audio></div>
+    <div id="ps1-q">
+      <div class="q" data-correct="ANO"><div class="q-text"><span class="q-num">1.</span>Martin volá na vlakové nádraží.</div><div class="answers"><button class="ans-btn" data-val="ANO">ANO</button><button class="ans-btn" data-val="NE">NE</button></div><div class="explain">✗ Správně: <b>ANO</b>.</div></div>
+      <div class="q" data-correct="ANO"><div class="q-text"><span class="q-num">2.</span>Vlak do Brna má zpoždění.</div><div class="answers"><button class="ans-btn" data-val="ANO">ANO</button><button class="ans-btn" data-val="NE">NE</button></div><div class="explain">✗ Správně: <b>ANO</b>.</div></div>
+      <div class="q" data-correct="NE"><div class="q-text"><span class="q-num">3.</span>Vlak odjíždí z nástupiště číslo 5.</div><div class="answers"><button class="ans-btn" data-val="ANO">ANO</button><button class="ans-btn" data-val="NE">NE</button></div><div class="explain">✗ Správně: <b>NE</b>.</div></div>
+      <div class="q" data-correct="NE"><div class="q-text"><span class="q-num">4.</span>Martin jede sám.</div><div class="answers"><button class="ans-btn" data-val="ANO">ANO</button><button class="ans-btn" data-val="NE">NE</button></div><div class="explain">✗ Správně: <b>NE</b>.</div></div>
+      <div class="q" data-correct="NE"><div class="q-text"><span class="q-num">5.</span>Sleva platí jen pro děti.</div><div class="answers"><button class="ans-btn" data-val="ANO">ANO</button><button class="ans-btn" data-val="NE">NE</button></div><div class="explain">✗ Správně: <b>NE</b>.</div></div>
+      <div class="q" data-correct="ANO"><div class="q-text"><span class="q-num">6.</span>Jízdenku lze koupit online.</div><div class="answers"><button class="ans-btn" data-val="ANO">ANO</button><button class="ans-btn" data-val="NE">NE</button></div><div class="explain">✗ Správně: <b>ANO</b>.</div></div>
+      <div class="q" data-correct="ANO"><div class="q-text"><span class="q-num">7.</span>Martin přijede do Brna před polednem.</div><div class="answers"><button class="ans-btn" data-val="ANO">ANO</button><button class="ans-btn" data-val="NE">NE</button></div><div class="explain">✗ Správně: <b>ANO</b>.</div></div>
+    </div>
+    <div class="check-row">
+      <button class="check-btn" data-task="ps1-q">Zkontrolovat odpovědi</button>
+      <span class="hint-msg" data-hint="ps1-q"></span>
+      <span class="score" data-score="ps1-q"></span>
+    </div>
+  </div>
+
+  <!-- POSLECH 2 -->
+  <div class="task" id="ps2">
+    <div class="task-badge"><span class="pink-star">✦</span> POSLECH, ÚLOHA Č. 2</div>
+    <div class="instruction">Uslyšíte 5 krátkých textů. Ke každému textu napište jednu krátkou odpověď. Nahrávku uslyšíte 2×.</div>
+    <div class="audio-wrap"><span class="audio-label">🔊 Nahrávka 2</span><audio controls src="audio/poslech2.mp3"></audio></div>
+    <div id="ps2-q">
+      <div class="q" data-correct="7:20|7.20|v 7:20|v 7.20|sedm dvacet"><div class="q-text"><span class="q-num">8.</span>V kolik hodin odjíždí autobus?</div><input class="text-ans" type="text" placeholder="napište odpověď…"><div class="explain">✗ Správná odpověď: <b>7:20</b>.</div></div>
+      <div class="q" data-correct="do recka|recko|do reckej"><div class="q-text"><span class="q-num">9.</span>Kam jede žena na dovolenou?</div><input class="text-ans" type="text" placeholder="napište odpověď…"><div class="explain">✗ Správná odpověď: <b>do Řecka</b>.</div></div>
+      <div class="q" data-correct="trikrat tydne|3x tydne|trikrat|3x"><div class="q-text"><span class="q-num">10.</span>Jak často muž jezdí do práce na kole?</div><input class="text-ans" type="text" placeholder="napište odpověď…"><div class="explain">✗ Správná odpověď: <b>třikrát týdně</b>.</div></div>
+      <div class="q" data-correct="v automatu|automat|u automatu"><div class="q-text"><span class="q-num">11.</span>Kde si mohou cestující koupit jízdenku?</div><input class="text-ans" type="text" placeholder="napište odpověď…"><div class="explain">✗ Správná odpověď: <b>v automatu</b>.</div></div>
+      <div class="q" data-correct="autobusem|autobus"><div class="q-text"><span class="q-num">12.</span>Jakým dopravním prostředkem jede rodina do zoo?</div><input class="text-ans" type="text" placeholder="napište odpověď…"><div class="explain">✗ Správná odpověď: <b>autobusem</b>.</div></div>
+    </div>
+    <div class="note-inline">Malé rozdíly v zápisu (velká/malá písmena, „3×" místo „třikrát") jsou v pořádku — kontrola je na to nastavená.</div>
+    <div class="check-row">
+      <button class="check-btn" data-task="ps2-q" data-fuzzy="1">Zkontrolovat odpovědi</button>
+      <span class="hint-msg" data-hint="ps2-q"></span>
+      <span class="score" data-score="ps2-q"></span>
+    </div>
+  </div>
+
+  <!-- POSLECH 3 -->
+  <div class="task" id="ps3">
+    <div class="task-badge"><span class="pink-star">✦</span> POSLECH, ÚLOHA Č. 3</div>
+    <div class="instruction">Uslyšíte 4 krátké rozhovory. U každého úkolu vyberte jednu správnou odpověď A–C. Nahrávku uslyšíte 2×.</div>
+    <div class="audio-wrap"><span class="audio-label">🔊 Nahrávka 3</span><audio controls src="audio/poslech3.mp3"></audio></div>
+    <div id="ps3-q">
+      <div class="q" data-correct="C"><div class="q-text"><span class="q-num">13.</span>Kam chce muž jet?</div><div class="answers"><button class="ans-btn" data-val="A">A) Do Brna</button><button class="ans-btn" data-val="B">B) Do Ostravy</button><button class="ans-btn" data-val="C">C) Do Plzně</button></div><div class="explain">✗ Správně: <b>C</b>.</div></div>
+      <div class="q" data-correct="A"><div class="q-text"><span class="q-num">14.</span>Proč žena nepůjde pěšky?</div><div class="answers"><button class="ans-btn" data-val="A">A) Prší</button><button class="ans-btn" data-val="B">B) Je unavená</button><button class="ans-btn" data-val="C">C) Spěchá</button></div><div class="explain">✗ Správně: <b>A</b>.</div></div>
+      <div class="q" data-correct="B"><div class="q-text"><span class="q-num">15.</span>V kolik hodin odjíždí metro?</div><div class="answers"><button class="ans-btn" data-val="A">A) V 18:05</button><button class="ans-btn" data-val="B">B) V 18:15</button><button class="ans-btn" data-val="C">C) V 18:50</button></div><div class="explain">✗ Správně: <b>B</b>.</div></div>
+      <div class="q" data-correct="C"><div class="q-text"><span class="q-num">16.</span>Jak muž nejčastěji cestuje do práce?</div><div class="answers"><button class="ans-btn" data-val="A">A) Autobusem</button><button class="ans-btn" data-val="B">B) Autem</button><button class="ans-btn" data-val="C">C) Vlakem</button></div><div class="explain">✗ Správně: <b>C</b>.</div></div>
+    </div>
+    <div class="check-row">
+      <button class="check-btn" data-task="ps3-q">Zkontrolovat odpovědi</button>
+      <span class="hint-msg" data-hint="ps3-q"></span>
+      <span class="score" data-score="ps3-q"></span>
+    </div>
+  </div>
+
+  <!-- POSLECH 4 -->
+  <div class="task" id="ps4">
+    <div class="task-badge"><span class="pink-star">✦</span> POSLECH, ÚLOHA Č. 4</div>
+    <div class="instruction">Uslyšíte 4 krátké rozhovory. Ke každému rozhovoru 17–20 přiřaďte správné téma A–F. Dvě témata jsou navíc. Nahrávku uslyšíte 2×.</div>
+    <div class="audio-wrap"><span class="audio-label">🔊 Nahrávka 4</span><audio controls src="audio/poslech4.mp3"></audio></div>
+    <div class="topics-legend"><b>Témata:</b> A – vlak &nbsp; B – autobus &nbsp; C – letiště &nbsp; D – taxík &nbsp; E – kolo &nbsp; F – metro</div>
+    <div id="ps4-q">
+      <div class="q" data-correct="A"><div class="q-text"><span class="q-num">17.</span>Rozhovor 1</div><div class="answers">
+        <button class="ans-btn" data-val="A">A</button><button class="ans-btn" data-val="B">B</button><button class="ans-btn" data-val="C">C</button><button class="ans-btn" data-val="D">D</button><button class="ans-btn" data-val="E">E</button><button class="ans-btn" data-val="F">F</button>
+      </div><div class="explain">✗ Správně: <b>A (vlak)</b>.</div></div>
+      <div class="q" data-correct="C"><div class="q-text"><span class="q-num">18.</span>Rozhovor 2</div><div class="answers">
+        <button class="ans-btn" data-val="A">A</button><button class="ans-btn" data-val="B">B</button><button class="ans-btn" data-val="C">C</button><button class="ans-btn" data-val="D">D</button><button class="ans-btn" data-val="E">E</button><button class="ans-btn" data-val="F">F</button>
+      </div><div class="explain">✗ Správně: <b>C (letiště)</b>.</div></div>
+      <div class="q" data-correct="D"><div class="q-text"><span class="q-num">19.</span>Rozhovor 3</div><div class="answers">
+        <button class="ans-btn" data-val="A">A</button><button class="ans-btn" data-val="B">B</button><button class="ans-btn" data-val="C">C</button><button class="ans-btn" data-val="D">D</button><button class="ans-btn" data-val="E">E</button><button class="ans-btn" data-val="F">F</button>
+      </div><div class="explain">✗ Správně: <b>D (taxík)</b>.</div></div>
+      <div class="q" data-correct="F"><div class="q-text"><span class="q-num">20.</span>Rozhovor 4</div><div class="answers">
+        <button class="ans-btn" data-val="A">A</button><button class="ans-btn" data-val="B">B</button><button class="ans-btn" data-val="C">C</button><button class="ans-btn" data-val="D">D</button><button class="ans-btn" data-val="E">E</button><button class="ans-btn" data-val="F">F</button>
+      </div><div class="explain">✗ Správně: <b>F (metro)</b>.</div></div>
+    </div>
+    <div class="check-row">
+      <button class="check-btn" data-task="ps4-q">Zkontrolovat odpovědi</button>
+      <span class="hint-msg" data-hint="ps4-q"></span>
+      <span class="score" data-score="ps4-q"></span>
+    </div>
+  </div>
+
+  <!-- ============ PSANÍ ============ -->
+  <div class="section-divider"><div class="line"></div><div class="label">✍️ Psaní</div><div class="line"></div></div>
+
+  <div class="task">
+    <div class="task-badge"><span class="pink-star">✦</span> ZADÁNÍ K VYPRACOVÁNÍ</div>
+    <div class="instruction">Tuhle část neopravuje stránka automaticky — napište text na papír nebo do wordu a probereme ho spolu na lekci.</div>
+    <div class="two-display">
+      <div class="display-card">
+        <h4>✉️ Úloha 1 (min. 40 slov)</h4>
+        <p>Napište e-mail tetě. Pozvala vás na návštěvu na Lipno.</p>
+        <ul><li>poděkovat a zeptat se na detaily</li><li>co si máte vzít s sebou</li><li>jaký program plánuje</li></ul>
+        <span class="min-words">min. 40 slov</span>
+      </div>
+      <div class="display-card">
+        <h4>📓 Úloha 2 (min. 60 slov)</h4>
+        <p>Napište zápis do deníku. Minulý týden jste navštívil/a novou zemi.</p>
+        <ul><li>kterou zemi jste navštívil/a</li><li>s kým jste tam byl/a</li><li>co jste dělal/a</li><li>co se Vám tam líbilo nebo nelíbilo</li></ul>
+        <span class="min-words">min. 60 slov</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ MLUVENÍ ============ -->
+  <div class="section-divider"><div class="line"></div><div class="label">🗣️ Mluvení</div><div class="line"></div></div>
+
+  <div class="task">
+    <div class="task-badge"><span class="pink-star">✦</span> ÚLOHA Č. 1</div>
+    <div class="instruction">Ústní část si projdeme spolu na lekci — tady jsou jen otázky, ať se na ně stihnete podívat předem.</div>
+    <div class="display-card">
+      <ul>
+        <li>Jak nejčastěji jezdíte do práce nebo do školy?</li>
+        <li>Jaký dopravní prostředek máte nejradši a proč?</li>
+        <li>Jak často cestujete vlakem?</li>
+        <li>Kam jste jel/a naposledy na výlet?</li>
+        <li>Co děláte během dlouhé cesty?</li>
+        <li>Jaké dopravní prostředky jsou ve Vašem městě?</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="task">
+    <div class="task-badge"><span class="pink-star">✦</span> ÚLOHA Č. 2</div>
+    <div class="instruction">Podívejte se na obrázky, popište 2 z nich a odpovězte na otázky.</div>
+    <div class="display-card" style="background:#fff;padding:10px;">
+      <img src="images/mluveni-doprava.jpg" alt="Obrázky k popisu — doprava" style="width:100%;border-radius:10px;display:block;">
+    </div>
+    <div class="display-card">
+      <ul>
+        <li>Který obrázek se Vám nejvíce líbí a proč?</li>
+        <li>Kterým dopravním prostředkem cestujete nejčastěji?</li>
+        <li>Jaké jsou výhody cestování vlakem?</li>
+        <li>Chtěl/a byste více jezdit na kole? Proč?</li>
+        <li>Jak často létáte letadlem?</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="task">
+    <div class="task-badge"><span class="pink-star">✦</span> ÚLOHA Č. 3 — DIALOG, ZTRACENÝ KUFR</div>
+    <div class="instruction">Jste na letišti. Po příletu nemůžete najít svůj kufr. Musíte se zeptat na 5 informací.</div>
+    <div class="display-card" style="background:#fff;padding:10px;">
+      <img src="images/dialog-kufr.jpg" alt="Dialog – ztracený kufr" style="width:100%;border-radius:10px;display:block;">
+    </div>
+  </div>
+
+  <div class="credit">@tatiana.sayfutdinova</div>
+  <div class="footer-note">Tento materiál je určen pouze pro klienty Taťány Sajfutdinovové. Prosíme, nesdílejte ho dál mimo naši skupinu. Děkujeme za pochopení. 🙏🏼</div>
+
+</div>
+
+<script>
+(function(){
+  // ---- password gate (rotates weekly between testCCE3 / CCE3test) ----
+  function isoWeekNumber(d){
+    d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+    var day = (d.getUTCDay() + 6) % 7; // Mon=0..Sun=6
+    d.setUTCDate(d.getUTCDate() - day + 3); // nearest Thursday
+    var week1 = new Date(Date.UTC(d.getUTCFullYear(), 0, 4));
+    return 1 + Math.round(((d - week1) / 86400000 - 3 + (week1.getUTCDay() + 6) % 7) / 7);
+  }
+  var currentPassword = (isoWeekNumber(new Date()) % 2 === 0) ? 'testCCE3' : 'CCE3test';
+
+  function unlock(){
+    var overlay = document.getElementById('gateOverlay');
+    var page = document.getElementById('page-content');
+    if (overlay) overlay.style.display = 'none';
+    if (page) page.style.display = 'block';
+    try { sessionStorage.setItem('mt3-unlocked', '1'); } catch(e){}
+  }
+
+  var alreadyUnlocked = false;
+  try { alreadyUnlocked = sessionStorage.getItem('mt3-unlocked') === '1'; } catch(e){}
+  if (alreadyUnlocked){
+    unlock();
+  } else {
+    var gateBtn = document.getElementById('gateBtn');
+    var gateInput = document.getElementById('gateInput');
+    var gateError = document.getElementById('gateError');
+    function tryUnlock(){
+      var val = (gateInput.value || '').trim().toLowerCase();
+      if (val === currentPassword.toLowerCase()){
+        unlock();
+      } else {
+        gateError.classList.add('show');
+      }
+    }
+    if (gateBtn){
+      gateBtn.addEventListener('click', tryUnlock);
+      gateInput.addEventListener('keydown', function(e){
+        if (e.key === 'Enter') tryUnlock();
+      });
+    }
+  }
+
+  // watermark
+  var wm = document.getElementById('watermark');
+  var full = 'POUZE PRO NAŠI SKUPINU · '.repeat(6);
+  for (var r = 0; r < 7; r++){
+    var s = document.createElement('span');
+    s.textContent = full;
+    s.style.top = (r * 15 - 5) + '%';
+    s.style.left = '-20%';
+    wm.appendChild(s);
+  }
+
+  document.addEventListener('contextmenu', function(e){ e.preventDefault(); });
+  document.addEventListener('copy', function(e){ e.preventDefault(); });
+  document.addEventListener('cut', function(e){ e.preventDefault(); });
+
+  function normalize(str){
+    return str
+      .toLowerCase()
+      .normalize('NFD').replace(/[̀-ͯ]/g, '') // strip diacritics
+      .replace(/[.,;!?]/g, '')
+      .trim()
+      .replace(/\s+/g, ' ');
+  }
+
+  // button-based answers (ANO/NE, A-D, A-C, A-F)
+  document.querySelectorAll('.q').forEach(function(q){
+    var btns = q.querySelectorAll('.ans-btn');
+    btns.forEach(function(b){
+      b.addEventListener('click', function(){
+        if (b.disabled) return;
+        btns.forEach(function(x){ x.classList.remove('selected'); });
+        b.classList.add('selected');
+        q.dataset.selected = b.dataset.val;
+      });
+    });
+  });
+
+  document.querySelectorAll('.check-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var containerId = btn.dataset.task;
+      var container = document.getElementById(containerId);
+      var qs = container.querySelectorAll('.q');
+      var hint = document.querySelector('[data-hint="' + containerId + '"]');
+      var scoreEl = document.querySelector('[data-score="' + containerId + '"]');
+      var isFuzzy = btn.dataset.fuzzy === '1';
+
+      var unanswered = 0;
+      qs.forEach(function(q){
+        if (isFuzzy){
+          var input = q.querySelector('.text-ans');
+          if (!input.value.trim()) unanswered++;
+        } else if (!q.dataset.selected){
+          unanswered++;
+        }
+      });
+      if (unanswered > 0){
+        hint.textContent = 'Zodpovězte prosím ještě ' + unanswered + (unanswered === 1 ? ' otázku.' : ' otázky/otázek.');
+        return;
+      }
+      hint.textContent = '';
+
+      var correctCount = 0;
+      qs.forEach(function(q){
+        var correct = q.dataset.correct;
+        var explain = q.querySelector('.explain');
+        var isRight = false;
+
+        if (isFuzzy){
+          var input = q.querySelector('.text-ans');
+          input.disabled = true;
+          var accepted = correct.split('|').map(normalize);
+          isRight = accepted.indexOf(normalize(input.value)) !== -1;
+          input.classList.add(isRight ? 'correct' : 'incorrect');
+        } else {
+          var selected = q.dataset.selected;
+          var btns = q.querySelectorAll('.ans-btn');
+          btns.forEach(function(b){
+            b.disabled = true;
+            b.classList.remove('selected');
+            if (b.dataset.val === selected && selected === correct){ b.classList.add('correct'); }
+            else if (b.dataset.val === selected && selected !== correct){ b.classList.add('incorrect'); }
+            else if (b.dataset.val === correct){ b.classList.add('reveal'); }
+          });
+          isRight = (selected === correct);
+        }
+
+        if (isRight){ correctCount++; }
+        else if (explain){ explain.classList.add('show'); }
+      });
+
+      scoreEl.textContent = 'Výsledek: ' + correctCount + ' / ' + qs.length;
+      scoreEl.classList.add('show');
+      scoreEl.classList.add(correctCount === qs.length ? 'good' : 'bad');
+      btn.disabled = true;
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
